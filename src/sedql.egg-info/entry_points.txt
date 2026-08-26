@@ -1,0 +1,2 @@
+[console_scripts]
+sedql = sedql.cli.main:cli

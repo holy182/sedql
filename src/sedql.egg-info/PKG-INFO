@@ -1,0 +1,36 @@
+Metadata-Version: 2.4
+Name: sedql
+Version: 0.1.0
+Summary: Semantic Entity Query Layer - AI-native semantic layer for your database
+Author-email: Your Name <your.email@example.com>
+License: AGPL-3.0
+Project-URL: Homepage, https://github.com/holy182/sedql
+Project-URL: Repository, https://github.com/holy182/sedql
+Project-URL: Issues, https://github.com/holy182/sedql/issues
+Keywords: database,semantic-layer,ai,sql,business-intelligence
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: GNU Affero General Public License v3
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Database :: Front-Ends
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+Requires-Dist: sqlalchemy>=2.0.0
+Requires-Dist: click>=8.1.0
+Requires-Dist: pyyaml>=6.0
+Requires-Dist: python-dotenv>=1.0.0
+Requires-Dist: pydantic>=2.0.0
+Requires-Dist: tabulate>=0.9.0
+Requires-Dist: colorama>=0.4.6
+Provides-Extra: ai
+Requires-Dist: openai>=1.0.0; extra == "ai"
+Requires-Dist: anthropic>=0.7.0; extra == "ai"
+Provides-Extra: postgres
+Requires-Dist: psycopg2-binary>=2.9.0; extra == "postgres"
+Provides-Extra: mysql
+Requires-Dist: pymysql>=1.0.0; extra == "mysql"
+Provides-Extra: all
+Requires-Dist: sedql[ai,mysql,postgres]; extra == "all"

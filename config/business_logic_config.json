@@ -1,0 +1,437 @@
+{
+    "version": "2.0",
+    "name": "SEDQL Business Logic Configuration",
+    "description": "Configuration for business logic detection and semantic layer generation",
+    "domain_detection": {
+        "enabled": true,
+        "domains": {
+            "ecommerce": {
+                "patterns": {
+                    "tables": [
+                        "order",
+                        "product",
+                        "customer",
+                        "cart",
+                        "payment",
+                        "shipment"
+                    ],
+                    "columns": [
+                        "price",
+                        "quantity",
+                        "total_amount",
+                        "tax",
+                        "shipping",
+                        "inventory"
+                    ]
+                },
+                "metrics": [
+                    "revenue",
+                    "average_order_value",
+                    "conversion_rate",
+                    "customer_lifetime_value"
+                ],
+                "weight": 2
+            },
+            "saas": {
+                "patterns": {
+                    "tables": [
+                        "user",
+                        "subscription",
+                        "plan",
+                        "feature",
+                        "billing",
+                        "tenant"
+                    ],
+                    "columns": [
+                        "mrr",
+                        "churn",
+                        "activation",
+                        "tier",
+                        "plan",
+                        "usage"
+                    ]
+                },
+                "metrics": [
+                    "monthly_recurring_revenue",
+                    "churn_rate",
+                    "activation_rate",
+                    "customer_acquisition_cost"
+                ],
+                "weight": 2
+            },
+            "fintech": {
+                "patterns": {
+                    "tables": [
+                        "transaction",
+                        "account",
+                        "wallet",
+                        "transfer",
+                        "balance",
+                        "ledger"
+                    ],
+                    "columns": [
+                        "amount",
+                        "balance",
+                        "currency",
+                        "fee",
+                        "interest",
+                        "rate"
+                    ]
+                },
+                "metrics": [
+                    "total_volume",
+                    "average_transaction",
+                    "net_income",
+                    "return_on_investment"
+                ],
+                "weight": 2
+            },
+            "healthcare": {
+                "patterns": {
+                    "tables": [
+                        "patient",
+                        "appointment",
+                        "doctor",
+                        "prescription",
+                        "diagnosis",
+                        "treatment"
+                    ],
+                    "columns": [
+                        "diagnosis",
+                        "prescription",
+                        "symptom",
+                        "treatment",
+                        "dosage"
+                    ]
+                },
+                "metrics": [
+                    "patient_volume",
+                    "appointment_rate",
+                    "treatment_success_rate"
+                ],
+                "weight": 2
+            },
+            "logistics": {
+                "patterns": {
+                    "tables": [
+                        "shipment",
+                        "warehouse",
+                        "driver",
+                        "vehicle",
+                        "route",
+                        "delivery"
+                    ],
+                    "columns": [
+                        "tracking",
+                        "delivery",
+                        "mileage",
+                        "fuel",
+                        "weight",
+                        "dimensions"
+                    ]
+                },
+                "metrics": [
+                    "delivery_time",
+                    "fuel_efficiency",
+                    "shipment_volume"
+                ],
+                "weight": 2
+            }
+        }
+    },
+    "business_rules": {
+        "enabled": true,
+        "default_severity": "MEDIUM",
+        "categories": {
+            "validation": {
+                "enabled": true,
+                "severity": "MEDIUM",
+                "rules": [
+                    {
+                        "name": "NotNullValidation",
+                        "description": "Ensure required fields are not null",
+                        "condition": "{field} IS NOT NULL",
+                        "action": "REJECT_QUERY",
+                        "priority": 1
+                    },
+                    {
+                        "name": "StatusValidation",
+                        "description": "Validate status values are allowed",
+                        "condition": "{field} IN ({allowed_values})",
+                        "action": "REJECT_QUERY",
+                        "priority": 2
+                    },
+                    {
+                        "name": "RangeValidation",
+                        "description": "Validate numeric ranges",
+                        "condition": "{field} BETWEEN {min} AND {max}",
+                        "action": "REJECT_QUERY",
+                        "priority": 3
+                    },
+                    {
+                        "name": "DateFormatValidation",
+                        "description": "Validate date formats",
+                        "condition": "{field} IS DATE FORMAT {format}",
+                        "action": "REJECT_QUERY",
+                        "priority": 4
+                    }
+                ]
+            },
+            "security": {
+                "enabled": true,
+                "severity": "HIGH",
+                "rules": [
+                    {
+                        "name": "PIIProtection",
+                        "description": "Protect personally identifiable information",
+                        "action": "MASK_DATA",
+                        "priority": 1
+                    },
+                    {
+                        "name": "DataEncryption",
+                        "description": "Ensure sensitive data is encrypted",
+                        "action": "ENCRYPT_DATA",
+                        "priority": 2
+                    },
+                    {
+                        "name": "AccessControl",
+                        "description": "Enforce role-based access control",
+                        "action": "CHECK_ACCESS",
+                        "priority": 3
+                    }
+                ]
+            },
+            "compliance": {
+                "enabled": true,
+                "severity": "HIGH",
+                "rules": [
+                    {
+                        "name": "GDPRCompliance",
+                        "description": "Enforce GDPR data protection rules",
+                        "action": "FILTER_ROW",
+                        "priority": 1
+                    },
+                    {
+                        "name": "DataRetention",
+                        "description": "Enforce data retention policies",
+                        "action": "FILTER_ROW",
+                        "priority": 2
+                    },
+                    {
+                        "name": "AuditTrail",
+                        "description": "Maintain audit trail of data access",
+                        "action": "LOG_ACCESS",
+                        "priority": 3
+                    }
+                ]
+            },
+            "business_logic": {
+                "enabled": true,
+                "severity": "LOW",
+                "rules": [
+                    {
+                        "name": "RevenueCalculation",
+                        "description": "Calculate revenue with business logic",
+                        "action": "TRANSFORM",
+                        "priority": 1
+                    },
+                    {
+                        "name": "DiscountRules",
+                        "description": "Apply business discount rules",
+                        "action": "TRANSFORM",
+                        "priority": 2
+                    },
+                    {
+                        "name": "InventoryRules",
+                        "description": "Manage inventory based on business rules",
+                        "action": "TRANSFORM",
+                        "priority": 3
+                    }
+                ]
+            }
+        }
+    },
+    "pii_detection": {
+        "enabled": true,
+        "patterns": {
+            "email": {
+                "pattern": "email|e-mail|mail",
+                "masking": "***@***",
+                "severity": "HIGH"
+            },
+            "phone": {
+                "pattern": "phone|mobile|cell|telephone",
+                "masking": "***-***-****",
+                "severity": "HIGH"
+            },
+            "ssn": {
+                "pattern": "ssn|social_security|socialsecurity",
+                "masking": "***-**-****",
+                "severity": "CRITICAL"
+            },
+            "password": {
+                "pattern": "password|passwd|pwd",
+                "masking": "********",
+                "severity": "CRITICAL"
+            },
+            "credit_card": {
+                "pattern": "credit_card|card_number|cc_number",
+                "masking": "****-****-****-****",
+                "severity": "CRITICAL"
+            },
+            "address": {
+                "pattern": "address|street|location",
+                "masking": "*** ADDRESS ***",
+                "severity": "MEDIUM"
+            },
+            "dob": {
+                "pattern": "dob|birth_date|date_of_birth",
+                "masking": "****-**-**",
+                "severity": "HIGH"
+            }
+        }
+    },
+    "naming_rules": {
+        "enabled": true,
+        "table_mappings": {
+            "user": "Customer",
+            "users": "Customer",
+            "customer": "Customer",
+            "customers": "Customer",
+            "client": "Customer",
+            "clients": "Customer",
+            "order": "Order",
+            "orders": "Order",
+            "purchase": "Order",
+            "purchases": "Order",
+            "product": "Product",
+            "products": "Product",
+            "item": "Product",
+            "items": "Product",
+            "category": "Category",
+            "categories": "Category",
+            "payment": "Payment",
+            "payments": "Payment",
+            "transaction": "Transaction",
+            "transactions": "Transaction",
+            "address": "Address",
+            "addresses": "Address",
+            "invoice": "Invoice",
+            "invoices": "Invoice",
+            "employee": "Employee",
+            "employees": "Employee",
+            "staff": "Employee",
+            "department": "Department",
+            "departments": "Department",
+            "supplier": "Supplier",
+            "suppliers": "Supplier",
+            "vendor": "Supplier",
+            "vendors": "Supplier",
+            "inventory": "Inventory",
+            "stock": "Inventory",
+            "shipment": "Shipment",
+            "shipments": "Shipment",
+            "delivery": "Shipment",
+            "deliveries": "Shipment"
+        },
+        "field_mappings": {
+            "id": "ID",
+            "name": "Name",
+            "first_name": "First Name",
+            "last_name": "Last Name",
+            "email": "Email Address",
+            "phone": "Phone Number",
+            "address": "Physical Address",
+            "city": "City",
+            "state": "State/Province",
+            "country": "Country",
+            "zip": "Postal Code",
+            "zipcode": "Postal Code",
+            "postal_code": "Postal Code",
+            "created_at": "Created Date",
+            "updated_at": "Updated Date",
+            "deleted_at": "Deleted Date",
+            "status": "Status",
+            "active": "Active Flag",
+            "total": "Total Amount",
+            "total_amount": "Total Amount",
+            "subtotal": "Subtotal",
+            "tax": "Tax Amount",
+            "shipping": "Shipping Cost",
+            "discount": "Discount",
+            "quantity": "Quantity",
+            "price": "Unit Price",
+            "cost": "Cost",
+            "profit": "Profit",
+            "margin": "Margin",
+            "revenue": "Revenue",
+            "sales": "Sales"
+        }
+    },
+    "metrics": {
+        "enabled": true,
+        "definitions": {
+            "revenue": {
+                "description": "Total revenue",
+                "formula": "SUM({field})",
+                "category": "financial",
+                "filters": [
+                    "status != 'cancelled'",
+                    "status != 'refunded'"
+                ]
+            },
+            "average_order_value": {
+                "description": "Average value of orders",
+                "formula": "AVG({field})",
+                "category": "financial"
+            },
+            "conversion_rate": {
+                "description": "Conversion rate",
+                "formula": "COUNT({entity}) / COUNT(visitors) * 100",
+                "category": "performance"
+            },
+            "customer_lifetime_value": {
+                "description": "Customer lifetime value",
+                "formula": "SUM({field}) GROUP BY customer",
+                "category": "financial"
+            }
+        }
+    },
+    "status_values": {
+        "enabled": true,
+        "common_statuses": {
+            "order_status": [
+                "pending",
+                "processing",
+                "completed",
+                "cancelled",
+                "refunded"
+            ],
+            "payment_status": [
+                "pending",
+                "paid",
+                "failed",
+                "refunded"
+            ],
+            "user_status": [
+                "active",
+                "inactive",
+                "suspended",
+                "deleted"
+            ],
+            "product_status": [
+                "active",
+                "inactive",
+                "draft",
+                "archived"
+            ],
+            "shipment_status": [
+                "pending",
+                "processing",
+                "shipped",
+                "delivered",
+                "returned"
+            ]
+        }
+    }
+}
