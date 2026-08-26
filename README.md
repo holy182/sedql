@@ -1,4 +1,4 @@
-# SEDQL - Semantic Database Query Layer
+# SeDQL - Semantic Database Query Layer
 
 <p align="center">
   <img src="https://img.shields.io/badge/version-0.2.0-blue.svg" alt="Version">
@@ -12,17 +12,17 @@
 
 ---
 
-## What is SEDQL?
+## What is SeDQL?
 
-SEDQL reads your database schema and exports a clean, structured JSON semantic layer — business names, relationships, PII flags, and rules — that you can drop straight into a prompt, a RAG pipeline, or an agent's context window.
+SeDQL reads your database schema and exports a clean, structured JSON semantic layer — business names, relationships, PII flags, and rules — that you can drop straight into a prompt, a RAG pipeline, or an agent's context window.
 
-It also ships a small template-based query CLI as a convenience for quick lookups without writing SQL, but the export is the point. If you're building anything that hands database context to an LLM (a coding agent, a support bot, a RAG system), SEDQL is the fastest way to generate that context without hand-writing a schema description yourself.
+It also ships a small template-based query CLI as a convenience for quick lookups without writing SQL, but the export is the point. If you're building anything that hands database context to an LLM (a coding agent, a support bot, a RAG system), SeDQL is the fastest way to generate that context without hand-writing a schema description yourself.
 
 **It is not an LLM. It is not a data warehouse. It is a thin, local wrapper around your database that makes it legible — to you and to AI.**
 
 ---
 
-## What SEDQL Actually Does
+## What SeDQL Actually Does
 
 | Claim (Marketing) | Reality (What It Does) |
 |-------------------|----------------------|
@@ -50,17 +50,17 @@ This tool is for developers who want to:
 
 ## The Honest Tradeoff
 
-| SEDQL | LLM-Powered Alternatives (WrenAI, Vanna) |
+| SeDQL | LLM-Powered Alternatives (WrenAI, Vanna) |
 |-------|------------------------------------------|
 | No API keys required to generate the export | Requires LLM API key to generate context or answer queries |
 | 100% local processing | Sends data/schema to cloud (usually) |
 | Works offline | Requires internet |
-| You bring your own LLM for querying — SEDQL just prepares the context | Query answering is built in, end to end |
+| You bring your own LLM for querying — SeDQL just prepares the context | Query answering is built in, end to end |
 | Predictable, template-based query responses (bonus feature) | Flexible free-form querying, but can hallucinate |
 | 5-100 table sweet spot | Scales to thousands of tables |
 | No external services to configure | Requires connecting an LLM provider and, often, a vector store |
 
-SEDQL isn't trying to be the thing that answers your question. It's trying to be the thing that hands an LLM everything it needs to answer your question correctly, without you writing that context by hand every time your schema changes.
+SeDQL isn't trying to be the thing that answers your question. It's trying to be the thing that hands an LLM everything it needs to answer your question correctly, without you writing that context by hand every time your schema changes.
 
 ---
 
@@ -116,9 +116,9 @@ pip install "sedql[all]"        # All
 
 ### Supported Query Templates (Bonus Feature)
 
-The `query` command is a convenience for quick lookups without writing SQL — not SEDQL's main feature. It matches natural language questions against a template list:
+The `query` command is a convenience for quick lookups without writing SQL — not SeDQL's main feature. It matches natural language questions against a template list:
 
-| You Ask | SEDQL Translates To |
+| You Ask | SeDQL Translates To |
 |---------|-------------------|
 | "show me all [entity]" | `SELECT * FROM [table] LIMIT 10` |
 | "show me [entity] where [field] is [value]" | `SELECT * FROM [table] WHERE [field] = [value]` |
@@ -126,7 +126,7 @@ The `query` command is a convenience for quick lookups without writing SQL — n
 | "top N [entity] by [field]" | `SELECT * FROM [table] ORDER BY [field] DESC LIMIT N` |
 | "sum [field] from [entity]" | `SELECT SUM([field]) FROM [table]` |
 
-If your question doesn't match a template, SEDQL will tell you what patterns it does support.
+If your question doesn't match a template, SeDQL will tell you what patterns it does support.
 
 ---
 
@@ -136,8 +136,8 @@ If your question doesn't match a template, SEDQL will tell you what patterns it 
 
 ```bash
 DATABASE_URL=postgresql://user:pass@localhost:5432/mydb
-SEDQL_CONFIG_PATH=./sedql.config.json
-SEDQL_LOG_LEVEL=INFO
+SeDQL_CONFIG_PATH=./sedql.config.json
+SeDQL_LOG_LEVEL=INFO
 ```
 
 ### Config File
@@ -219,7 +219,7 @@ The exported JSON includes:
 flowchart TB
     DB[("Your Database<br/>PostgreSQL · MySQL · SQLite")]
 
-    subgraph CORE["SEDQL Core"]
+    subgraph CORE["SeDQL Core"]
         direction TB
         CONN["Connectors<br/><sub>pooling, retry, health checks</sub>"]
         PARSE["Schema Parser<br/><sub>tables, columns, relationships</sub>"]
@@ -266,7 +266,7 @@ Because the export already resolves table names to business entities and flags P
 
 ---
 
-## Who's Using SEDQL?
+## Who's Using SeDQL?
 
 Ideal for:
 
@@ -288,22 +288,22 @@ Not ideal for:
 
 ## What's Next
 
-SEDQL is v0.2.0 — early, and shaped by whoever shows up to build it. Here's the direction, roughly in priority order:
+SeDQL is v0.2.0 — early, and shaped by whoever shows up to build it. Here's the direction, roughly in priority order:
 
-- **First-class SQLite / embeddable mode** — use SEDQL as a Python library inside a local-first or desktop app, not just a CLI. Generate context at runtime instead of exporting a file.
+- **First-class SQLite / embeddable mode** — use SeDQL as a Python library inside a local-first or desktop app, not just a CLI. Generate context at runtime instead of exporting a file.
 - **More query templates** — the pattern list is intentionally small right now. Contributions of new templates (with tests) are one of the easiest ways to add value.
 - **Richer relationship inference** — better detection of implicit foreign keys and many-to-many join tables beyond declared constraints.
 - **Pluggable PII detectors** — swap the regex-based detector for something smarter (custom rules, allow/deny lists, or an optional local NER model) without touching core.
 - **Semantic layer validators** — a `sedql lint` command to catch missing descriptions, orphaned rules, or entities with no business name before you export.
 - **More database backends** — DuckDB and MSSQL are the next likely additions after the current three.
 
-None of this is committed on a timeline — it's a list of what would make SEDQL more useful, not a promise. If one of these matters to you, open an issue or just start on it.
+None of this is committed on a timeline — it's a list of what would make SeDQL more useful, not a promise. If one of these matters to you, open an issue or just start on it.
 
 ---
 
 ## Contributing
 
-SEDQL only gets better with more schemas, more edge cases, and more hands on it. This isn't a solo project by design — the goal is for it to become a genuinely useful, community-run open-source semantic layer, and that only happens with contributors.
+SeDQL only gets better with more schemas, more edge cases, and more hands on it. This isn't a solo project by design — the goal is for it to become a genuinely useful, community-run open-source semantic layer, and that only happens with contributors.
 
 Good places to start:
 
@@ -346,7 +346,7 @@ If you're not sure where to start, open a Discussion — don't feel like you nee
 
 AGPL-3.0
 
-> **Note:** AGPL-3.0 means anyone who runs a modified version of SEDQL as a network service must release their source changes too — not just people who redistribute the binary. If you're targeting indie devs and small teams embedding SEDQL inside proprietary products, double-check this is the license you actually want; MIT or Apache-2.0 is more common for that audience unless blocking closed-source SaaS wrappers is a deliberate goal.
+> **Note:** AGPL-3.0 means anyone who runs a modified version of SeDQL as a network service must release their source changes too — not just people who redistribute the binary. If you're targeting indie devs and small teams embedding SeDQL inside proprietary products, double-check this is the license you actually want; MIT or Apache-2.0 is more common for that audience unless blocking closed-source SaaS wrappers is a deliberate goal.
 
 ---
 
