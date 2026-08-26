@@ -68,7 +68,7 @@ SeDQL isn't trying to be the thing that answers your question. It's trying to be
 
 ```bash
 # Install
-pip install sedql
+pip install sedql-cli
 
 # Initialize with your database
 sedql init --db "sqlite:///mydb.db"
@@ -86,15 +86,15 @@ sedql export --output semantic.json
 ## Installation
 
 ```bash
-pip install sedql
+pip install sedql-cli
 ```
 
 With database support:
 
 ```bash
-pip install "sedql[postgres]"   # PostgreSQL
-pip install "sedql[mysql]"      # MySQL
-pip install "sedql[all]"        # All
+pip install "sedql-cli[postgres]"   # PostgreSQL
+pip install "sedql-cli[mysql]"      # MySQL
+pip install "sedql-cli[all]"        # All
 ```
 
 ---
